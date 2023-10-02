@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.io</title>
+</head>
+<body>
+
+<h1>Socket listening</h1>
+<ul id="messages"></ul>
+<form id="socket_io">
+    <label for="form_input">Enter text</label>
+    <input type="text" id="form_input"/>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const server = "http://localhost:3000"
+
+    const socket = io(server, {autoConnect: false});
+    const form = document.getElementById('socket_io')
+    const input = document.getElementById('form_input')
+    const messages = document.getElementById("messages")
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        socket.emit('chat', input.value)
+        input.value = ''
+    })
+
+    socket.on('chat', message => {
+        const msg = document.createElement('li')
+        msg.textContent = message
+        messages.appendChild(msg)
+    })
+</script>
+
+</body>
+</html>
